@@ -3,7 +3,7 @@ function coords(latitude, longitude) {
 }
 
 export const stopCoords = {
-  "BN": coords(100, 2000),
+  "BN": coords(20.2960587, 85.8245398),
   "JJ": coords(200, 3000),
   "Trends": coords(900, 200)
 }

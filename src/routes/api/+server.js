@@ -29,8 +29,8 @@ export async function POST({ request }) {
   if (studentRequests[data.get("rollno")]) 
     return json({ success: false, msg: "Already requested for " + studentRequests[data.get("rollno")]});
 
+  // getting the nearest busstop
   const loc = JSON.parse(data.get("loc"));
-  
   let best = 0, min = distanceInKm(stopCoords[stopNames[0]], loc);
   for (let i = 1; i < stopNames.length; i++) {
     const dist = distanceInKm(stopCoords[stopNames[i]], loc);
@@ -42,7 +42,7 @@ export async function POST({ request }) {
   best = stopNames[best];
 
   // not near to any stops
-  if (best < 0.1) return json({ success: false, msg: "You are not close to any bus stops yet." });
+  if (min > 0.1) return json({ success: false, msg: "You are not close to any bus stops yet." });
 
   busStopRequests[best].add(data.get("rollno"));
   studentRequests[data.get("rollno")] = best;

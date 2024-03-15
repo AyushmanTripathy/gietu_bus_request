@@ -1,0 +1,16 @@
+{
+  "/api": {
+    "GET": {
+      "params": [],
+      "des": "Returns count of people waiting at all stops"
+    },
+    "POST": {
+      "params": ["latitude", "longitude", "rollno"],
+      "des": "Add new request for user in nearest stop"
+    },
+    "DELETE": {
+      "params": ["rollno"],
+      "des": "Deletes the request from a user"
+    }
+  }
+}

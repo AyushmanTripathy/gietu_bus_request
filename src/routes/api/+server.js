@@ -18,14 +18,13 @@ export async function GET({ request, locals }) {
   return json(busWaitingCount);
 }
 
-export async function DELETE({ request }) {
+export async function DELETE({ locals }) {
   const session = await locals.getSession();
   if (!session) {
     throw error(401, "Forbidden");
   }
 
-  const data = await request.formData();
-  const email = data.get("email");
+  const email = session.user.email;
   if (!studentRequests[email])
     return json({ success: false, msg: "No requests from user" });
   busStopRequests[studentRequests[email]].delete(email);
@@ -33,14 +32,14 @@ export async function DELETE({ request }) {
   return json({ success: true });
 }
 
-export async function POST({ request }) {
+export async function POST({ request, locals }) {
   const session = await locals.getSession();
   if (!session) {
     throw error(401, "Forbidden");
   }
 
   const data = await request.formData();
-  const email = data.get("email");
+  const email = session.user.email;
 
   if (studentRequests[email])
     return json({

@@ -5,11 +5,11 @@
       "des": "Returns count of people waiting at all stops"
     },
     "POST": {
-      "params": ["latitude", "longitude", "rollno"],
+      "params": ["latitude", "longitude"],
       "des": "Add new request for user in nearest stop"
     },
     "DELETE": {
-      "params": ["rollno"],
+      "params": [],
       "des": "Deletes the request from a user"
     }
   }

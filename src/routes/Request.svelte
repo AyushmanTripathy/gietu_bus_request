@@ -5,14 +5,12 @@
   let msg = "";
 
   async function requestBus(loc) {
-    if (!$page.data.session.user?.email) {
+    if (!$page.data.session.user) {
       msg = "You are not signed in!";
       return;
     }
 
-    const email = $page.data.session.user?.email;
     const data = new FormData();
-    data.append("email", email);
     data.append("loc", JSON.stringify({ 
       latitude: loc.coords.latitude,
       longitude: loc.coords.longitude
@@ -32,9 +30,7 @@
   }
 
   async function deleteRequest() {
-    const data = new FormData();
-    data.append("email", email);
-    let res = await fetch("/api", { method: "DELETE", body: data });
+    let res = await fetch("/api", { method: "DELETE" });
     res = await res.json();
 
     if (res.success) msg = "Request Cancelled";

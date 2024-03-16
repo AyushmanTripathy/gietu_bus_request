@@ -7,12 +7,16 @@
 
   let waiting = false;
   onMount(async () => {
+    if (!$page.data.session) return console.log("not signed in");
     let res = await fetch("/api");
     waiting = await res.json();
   });
 
   function signInWithGoogle() {
     signIn("google");
+  }
+  function signOutWithGoogle() {
+    signOut("google");
   }
 </script>
 
@@ -35,6 +39,7 @@
   </table>
   {/if}
   <Request />
+  <button on:click="{signOutWithGoogle}">Sign out</button>
   {:else}
   <button on:click="{signInWithGoogle}">Sign in with google</button>
   {/if}

@@ -1,11 +1,18 @@
 <script>
   import { onMount } from "svelte";
+  import { page } from "$app/stores";
 
-  let rollno = "23CSE417", msg = "";
+  let msg = "";
 
   async function requestBus(loc) {
+    if (!$page.data.session.user?.email) {
+      msg = "You are not signed in!";
+      return;
+    }
+
+    const email = $page.data.session.user?.email;
     const data = new FormData();
-    data.append("rollno", rollno);
+    data.append("email", email);
     data.append("loc", JSON.stringify({ 
       latitude: loc.coords.latitude,
       longitude: loc.coords.longitude
@@ -26,7 +33,7 @@
 
   async function deleteRequest() {
     const data = new FormData();
-    data.append("rollno", rollno);
+    data.append("email", email);
     let res = await fetch("/api", { method: "DELETE", body: data });
     res = await res.json();
 

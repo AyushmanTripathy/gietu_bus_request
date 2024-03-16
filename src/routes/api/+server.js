@@ -15,19 +15,20 @@ export async function GET({ request }) {
 
 export async function DELETE({ request }) {
   const data = await request.formData();
-  const rollno = data.get("rollno");
-  if (!studentRequests[rollno]) 
+  const email = data.get("email");
+  if (!studentRequests[email]) 
     return json({ success: false, msg: "No requests from user" });
-  busStopRequests[studentRequests[rollno]].delete(rollno);
-  delete studentRequests[rollno];
+  busStopRequests[studentRequests[email]].delete(email);
+  delete studentRequests[email];
   return json({ success: true });
 }
 
 export async function POST({ request }) {
   const data = await request.formData();
+  const email = data.get("email");
 
-  if (studentRequests[data.get("rollno")]) 
-    return json({ success: false, msg: "Already requested for " + studentRequests[data.get("rollno")]});
+  if (studentRequests[email]) 
+    return json({ success: false, msg: "Already requested for " + studentRequests[email]});
 
   // getting the nearest busstop
   const loc = JSON.parse(data.get("loc"));
@@ -44,8 +45,8 @@ export async function POST({ request }) {
   // not near to any stops
   if (min > 0.1) return json({ success: false, msg: "You are not close to any bus stops yet." });
 
-  busStopRequests[best].add(data.get("rollno"));
-  studentRequests[data.get("rollno")] = best;
+  busStopRequests[best].add(email);
+  studentRequests[email] = best;
   console.log(busStopRequests)
   return json({ success: true, stopName: best });
 }

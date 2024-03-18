@@ -1,15 +1,16 @@
 <script>
   import { signIn, signOut } from "@auth/sveltekit/client";
   import { page } from "$app/stores";
-
-  import Request from "./Request.svelte";
   import { onMount } from "svelte";
 
-  let waiting = false;
+  import Admin from "./_components/Admin.svelte";
+  import User from "./_components/User.svelte";
+
+  let response = false;
   onMount(async () => {
     if (!$page.data.session) return console.log("not signed in");
     let res = await fetch("/api");
-    waiting = await res.json();
+    response = await res.json();
   });
 
   function signInWithGoogle() {
@@ -22,26 +23,18 @@
 
 <main>
   {#if $page.data.session}
-  <img src="{$page.data.session.user?.image}" alt="User Icon">
-  <h1> {$page.data.session.user?.name ?? "User"}</h1>
-  {#if waiting}
-  <table>
-    <tr>
-      <td>Stop Name</td>
-      <td>Count</td>
-    </tr>
-    {#each waiting as stop}
-    <tr>
-      <td>{stop[0]}</td>
-      <td>{stop[1]}</td>
-    </tr>
-    {/each}
-  </table>
-  {/if}
-  <Request />
-  <button on:click="{signOutWithGoogle}">Sign out</button>
+    <img src="{$page.data.session.user?.image}" alt="User Icon">
+    <h1> {$page.data.session.user?.name ?? "User"}</h1>
+    {#if response}
+      {#if response.isAdmin}
+        <Admin data={response.busStopRequests} />
+      {:else}
+        <User data={response.busStopRequests} />
+      {/if}
+    {/if}
+    <button on:click="{signOutWithGoogle}">Sign out</button>
   {:else}
-  <button on:click="{signInWithGoogle}">Sign in with google</button>
+    <button on:click="{signInWithGoogle}">Sign in with google</button>
   {/if}
 </main>
 

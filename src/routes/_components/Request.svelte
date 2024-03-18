@@ -1,20 +1,12 @@
 <script>
   import { onMount } from "svelte";
-  import { page } from "$app/stores";
 
   let msg = "";
-
   async function requestBus(loc) {
-    if (!$page.data.session.user) {
-      msg = "You are not signed in!";
-      return;
-    }
-
-    const data = new FormData();
-    data.append("loc", JSON.stringify({ 
+    const data = JSON.stringify({ 
       latitude: loc.coords.latitude,
       longitude: loc.coords.longitude
-    }));
+    })
 
     let res = await fetch("/api", { method: "POST", body: data });
     res = await res.json();

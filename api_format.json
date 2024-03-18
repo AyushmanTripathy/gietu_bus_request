@@ -11,6 +11,10 @@
     "DELETE": {
       "params": [],
       "des": "Deletes the request from a user"
+    },
+    "PATCH": {
+      "params": ["no"],
+      "des": "Fullfills route no"
     }
   }
 }

@@ -1,21 +1,22 @@
 import { distanceInKm } from "$lib/utils.js";
 import { error, json } from "@sveltejs/kit";
-import { stopCoords, stopNames } from "$lib/stops.js";
+import { admins, stopCoords, routes, stopNames } from "$lib/info.js";
 
 const studentRequests = {};
 const busStopRequests = {};
-for (const name of stopNames) busStopRequests[name] = new Set();
+for (const name of stopNames)
+  busStopRequests[name] = { count: 0, fullfilled: false };
 
-export async function GET({ request, locals }) {
+export async function GET({ locals }) {
   const session = await locals.getSession();
   if (!session) {
     throw error(401, "Forbidden");
   }
 
-  const busWaitingCount = [];
-  for (const name in busStopRequests)
-    busWaitingCount.push([name, busStopRequests[name].size]);
-  return json(busWaitingCount);
+  return json({
+    busStopRequests,
+    isAdmin: admins.has(session.user.email),
+  });
 }
 
 export async function DELETE({ locals }) {
@@ -27,7 +28,8 @@ export async function DELETE({ locals }) {
   const email = session.user.email;
   if (!studentRequests[email])
     return json({ success: false, msg: "No requests from user" });
-  busStopRequests[studentRequests[email]].delete(email);
+
+  busStopRequests[studentRequests[email]].count--;
   delete studentRequests[email];
   return json({ success: true });
 }
@@ -38,7 +40,7 @@ export async function POST({ request, locals }) {
     throw error(401, "Forbidden");
   }
 
-  const data = await request.formData();
+  const loc = await request.json();
   const email = session.user.email;
 
   if (studentRequests[email])
@@ -48,7 +50,6 @@ export async function POST({ request, locals }) {
     });
 
   // getting the nearest busstop
-  const loc = JSON.parse(data.get("loc"));
   let best = 0,
     min = distanceInKm(stopCoords[stopNames[0]], loc);
   for (let i = 1; i < stopNames.length; i++) {
@@ -67,8 +68,22 @@ export async function POST({ request, locals }) {
       msg: "You are not close to any bus stops yet.",
     });
 
-  busStopRequests[best].add(email);
+  busStopRequests[best].count++;
   studentRequests[email] = best;
   console.log(busStopRequests);
   return json({ success: true, stopName: best });
+}
+
+export async function PATCH({ request, locals }) {
+  const session = await locals.getSession();
+  if (!session || !admins.has(session.user.email)) {
+    throw error(401, "Forbidden");
+  }
+
+  const no = await request.json()
+  for (const stop of routes[no]) {
+    busStopRequests[stop].fullfilled = true;
+  }
+
+  return json({ success: true });
 }

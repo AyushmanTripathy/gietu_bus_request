@@ -1,8 +1,7 @@
-$pri: #202020;
-$sec: #303030;
-$tri: #404040;
-$hl: #047dffcb;
-$light: #bbb;
+$pri: #222831;
+$sec: #393e46;
+$hl: #00adb5;
+$light: #eeeeee;
 
 $pin-max-width: 450px;
 $mobile: 860px;
@@ -10,6 +9,10 @@ $mobile: 860px;
 $page-index: 2;
 $page-bottom-padding: 5vh;
 
+@mixin blur {
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: saturate(180%) blur(8px);
+}
 @mixin shadow {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.3);
 }
@@ -20,7 +23,9 @@ $page-bottom-padding: 5vh;
   background-position: center;
 }
 @mixin sans {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat Alternates", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 @mixin section($height, $width) {
   height: $height;

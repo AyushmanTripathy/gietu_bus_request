@@ -5,7 +5,7 @@ import { admins, stopCoords, routes, stopNames } from "$lib/info.js";
 const studentRequests = {};
 const busStopRequests = {};
 for (const name of stopNames)
-  busStopRequests[name] = { count: 0, fullfilled: false };
+  busStopRequests[name] = { count: 0, fullfilled: true };
 
 export async function GET({ locals }) {
   const session = await locals.getSession();

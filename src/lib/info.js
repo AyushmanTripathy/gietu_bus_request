@@ -14,13 +14,14 @@ export const routes = [
   ["SBI", "BN", "OLD Gunupur", "Bikrampur"],
 ];
 
+
 export const stopCoords = {
   SBI: coords(21, 86),
-  BN: coords(20.2960587, 85.8245398),
-  JJ: coords(200, 3000),
+  BN: coords(19.068599, 83.816309),
+  JJ: coords(19.071408, 83.812883),
   "OLD Gunupur": coords(300, 200),
   Bikrampur: coords(100, 200),
-  Trends: coords(900, 200),
+  Trends: coords(19.073940, 83.809292),
 };
 
 export const stopNames = Object.keys(stopCoords);

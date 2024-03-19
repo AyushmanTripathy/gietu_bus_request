@@ -7,7 +7,7 @@ export const config = {
   maxBusTime: 60 * 60 * 1000
 }
 
-export const admins = new Set(["ayushmantripathy2004@gmail.com"]);
+export const admins = new Set(["ankit.choudhury0608@gmail.com", "ayushmantripathy2004@gmail.com"]);
 
 export const routes = [
   ["SBI", "BN", "JJ", "Trends"],

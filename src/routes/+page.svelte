@@ -54,7 +54,7 @@
     @include section(auto, 100vw);
     @include absolute;
     @include flex(column);
-    @include cover("background.svg");
+    @include cover("/background.svg");
     color: $light;
 
     min-height: 100vh;

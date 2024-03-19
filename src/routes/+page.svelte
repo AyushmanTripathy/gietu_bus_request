@@ -1,10 +1,11 @@
 <script>
-  import { signIn, signOut } from "@auth/sveltekit/client";
+  import { signOut } from "@auth/sveltekit/client";
   import { page } from "$app/stores";
   import { onMount } from "svelte";
 
   import Admin from "./_components/Admin.svelte";
   import User from "./_components/User.svelte";
+  import Login from "./_components/Login.svelte";
 
   let response = false;
   onMount(loadUi);
@@ -13,9 +14,6 @@
     if (!$page.data.session) return console.log("not signed in");
     let res = await fetch("/api");
     response = await res.json();
-  }
-  function signInWithGoogle() {
-    signIn("gogle");
   }
   function signOutWithGoogle() {
     signOut("google");
@@ -46,7 +44,7 @@
   {/if} 
   <div></div>
   {:else}
-  <button on:click="{signInWithGoogle}">Sign in with google</button>
+    <Login />
   {/if}
 </main>
 

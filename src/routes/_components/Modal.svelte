@@ -40,6 +40,7 @@
     @include flex-center;
     @include blur;
 
+    padding: 10px;
     transition: top 1s;
     text-align:center;
     border-radius: 10px;

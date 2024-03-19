@@ -1,11 +1,30 @@
 import { distanceInKm } from "$lib/utils.js";
 import { error, json } from "@sveltejs/kit";
-import { admins, stopCoords, routes, stopNames } from "$lib/info.js";
+import { config, admins, stopCoords, routes, stopNames } from "$lib/info.js";
 
 const studentRequests = {};
 const busStopRequests = {};
 for (const name of stopNames)
-  busStopRequests[name] = { count: 0, fullfilled: true };
+  busStopRequests[name] = { count: 0, fullfilled: false };
+
+setInterval(() => {
+  const time = Date.now();
+  for (const email in studentRequests) {
+    if (time - studentRequests[email].time > config.maxStudentRequestTime) {
+      busStopRequests[studentRequests[email].stop].count--;
+      delete studentRequests[email];
+    }
+  }
+
+  for (const stop of stopNames) {
+    if (
+      busStopRequests[stop].fullfilled &&
+      time - busStopRequests[stop].fullfilled > config.maxBusTime
+    ) {
+      busStopRequests[stop].fullfilled = false;
+    }
+  }
+}, 60000);
 
 export async function GET({ locals }) {
   const session = await locals.getSession();
@@ -29,8 +48,9 @@ export async function DELETE({ locals }) {
   if (!studentRequests[email])
     return json({ success: false, msg: "No requests from user" });
 
-  busStopRequests[studentRequests[email]].count--;
+  busStopRequests[studentRequests[email].stop].count--;
   delete studentRequests[email];
+  console.log(studentRequests, busStopRequests);
   return json({ success: true });
 }
 
@@ -46,7 +66,7 @@ export async function POST({ request, locals }) {
   if (studentRequests[email])
     return json({
       success: false,
-      msg: "Already requested for " + studentRequests[email],
+      msg: "Already requested for " + studentRequests[email].stop,
     });
 
   // getting the nearest busstop
@@ -69,8 +89,7 @@ export async function POST({ request, locals }) {
     });
 
   busStopRequests[best].count++;
-  studentRequests[email] = best;
-  console.log(busStopRequests);
+  studentRequests[email] = { stop: best, time: Date.now() };
   return json({ success: true, stopName: best });
 }
 
@@ -80,9 +99,9 @@ export async function PATCH({ request, locals }) {
     throw error(401, "Forbidden");
   }
 
-  const no = await request.json()
+  const no = await request.json();
   for (const stop of routes[no]) {
-    busStopRequests[stop].fullfilled = true;
+    busStopRequests[stop].fullfilled = Date.now();
   }
 
   return json({ success: true });

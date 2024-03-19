@@ -12,3 +12,12 @@ npm run dev
 ### Authentication
 
 we use OAuth with google, implemented using this [Medium Article](https://medium.com/@rahulserver/google-login-with-sveltekit-in-less-than-5min-0cc4681daf38)
+
+## TODO
+
+- frontend for admins
+- autocancellation of user requests
+
+## DONE
+
+- frontend for users

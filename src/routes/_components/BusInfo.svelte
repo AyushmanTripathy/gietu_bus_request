@@ -3,6 +3,7 @@
 </script>
 
 <section>
+  <h2> Bus stop's </h2>
   {#each Object.keys(data) as stop}
   <div>
     <strong> {stop} </strong>
@@ -14,7 +15,7 @@
       {#if data[stop].fullfilled}
       <span class="text">
         <span class="material-symbols-outlined"> directions_bus </span>
-        10min
+        {Math.floor((Date.now() - data[stop].fullfilled) / 60000)}min
       </span>
       {/if}
     </p>
@@ -23,6 +24,10 @@
 </section>
 
 <style lang="scss">
+  h2 {
+    border-bottom: 1px solid $hl;
+  }
+
   section {
     @include flex(column);
     @include flex-center;

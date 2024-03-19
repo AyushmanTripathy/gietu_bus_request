@@ -2,6 +2,11 @@ function coords(latitude, longitude) {
   return { longitude, latitude };
 }
 
+export const config = {
+  maxStudentRequestTime: 30 * 60 * 1000,
+  maxBusTime: 60 * 60 * 1000
+}
+
 export const admins = new Set(["ayushmantripathy2004@gmail.com"]);
 
 export const routes = [

@@ -56,6 +56,7 @@
       @include section(auto, 80vw);
       @include blur;
 
+      color: $light;
       padding: 15px;
 
       text-align: left;

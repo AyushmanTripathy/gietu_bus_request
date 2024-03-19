@@ -13,10 +13,9 @@
     if (!$page.data.session) return console.log("not signed in");
     let res = await fetch("/api");
     response = await res.json();
-    console.log(response);
   }
   function signInWithGoogle() {
-    signIn("google");
+    signIn("gogle");
   }
   function signOutWithGoogle() {
     signOut("google");

@@ -1,7 +1,9 @@
 <script>
   import { onMount } from "svelte";
+  import Modal from "./Modal.svelte";
 
-  let msg = "";
+  let showMsg;
+
   async function requestBus(loc) {
     const data = JSON.stringify({ 
       latitude: loc.coords.latitude,
@@ -10,8 +12,8 @@
 
     let res = await fetch("/api", { method: "POST", body: data });
     res = await res.json();
-    if (res.success) msg = "Request confirmed for " + res.stopName;
-    else msg = res.msg;
+    if (res.success) showMsg("Request confirmed for " + res.stopName, true);
+    else showMsg(res.msg, false);
     console.log(res)
   }
 
@@ -25,11 +27,13 @@
     let res = await fetch("/api", { method: "DELETE" });
     res = await res.json();
 
-    if (res.success) msg = "Request Cancelled";
-    else msg = res.msg;
+    if (res.success) showMsg("Request Cancelled", true);
+    else showMsg(res.msg, false);
     console.log(res) 
-  }
+  } 
 </script>
+
+<Modal bind:showMsg={showMsg}/>
 
 <section>
   <button on:click={request}> 

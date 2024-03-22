@@ -1,8 +1,10 @@
 <script>
   import BusInfo from "./BusInfo.svelte";
+  import Modal from "./Modal.svelte";
   import { routes } from "$lib/info.js";
   export let data;
 
+  let showMsg; 
   const routesCount = [];
   for (let i = 0; i < routes.length; i++) {
     routesCount[i] = 0;
@@ -16,9 +18,12 @@
       body: JSON.stringify(this),
     });
     res = await res.json();
-    console.log(res);
+    if (res.success) showMsg("Added Bus successfully" ,true)
+    else showMsg("Failed to add Bus", false);
   }
 </script>
+
+<Modal bind:showMsg={showMsg} />
 
 <section>
   <h2>Select Route</h2>

@@ -3,7 +3,7 @@
 </script>
 
 <section>
-  <h2> Bus stop's </h2>
+  <h2>Bus stop's</h2>
   {#each Object.keys(data) as stop}
   <div>
     <strong> {stop} </strong>
@@ -17,6 +17,8 @@
         <span class="material-symbols-outlined"> directions_bus </span>
         {Math.floor((Date.now() - data[stop].fullfilled) / 60000)}min
       </span>
+      {:else}
+      <span class="material-symbols-outlined"> bus_alert </span>
       {/if}
     </p>
   </div>

@@ -26,3 +26,4 @@ we use OAuth with google, implemented using this [Medium Article](https://medium
 
 -   frontend for users
 -   Crossed Bus icon if no bus is available
+-   Not selecting the logout btn

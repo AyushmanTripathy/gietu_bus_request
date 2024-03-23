@@ -78,6 +78,13 @@
       aspect-ratio: 1;
       height: 50px;
     }
+
+    button {
+      outline: none;
+      background: transparent;
+      color: $light;
+      border: none;
+    }
   }
 
   #reload {

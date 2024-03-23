@@ -1,11 +1,20 @@
 <script>
   export let data;
+  export let select = false;
+
+  let stopNames = Object.keys(data);
+  if (select) {
+    data[select.stop].selected = true;
+    stopNames = stopNames.filter((a) => a != select.stop);
+    stopNames.unshift(select.stop);
+  }
+  console.log(select, stopNames);
 </script>
 
 <section>
   <h2>Bus stop's</h2>
-  {#each Object.keys(data) as stop}
-  <div>
+  {#each stopNames as stop}
+  <div class="{data[stop].selected ? 'selected' : 'notselected'}">
     <strong> {stop} </strong>
     <p>
       <span class="text">
@@ -46,5 +55,9 @@
         padding-right: 30px;
       }
     }
+  }
+
+  .selected {
+    border: 2px solid $hl;
   }
 </style>

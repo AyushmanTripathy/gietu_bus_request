@@ -14,7 +14,6 @@
     res = await res.json();
     if (res.success) showMsg("Request confirmed for " + res.stopName, true);
     else showMsg(res.msg, false);
-    console.log(res)
   }
 
   function request() {

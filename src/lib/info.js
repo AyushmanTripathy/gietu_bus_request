@@ -4,7 +4,8 @@ function coords(latitude, longitude) {
 
 export const config = {
   maxStudentRequestTime: 30 * 60 * 1000,
-  maxBusTime: 60 * 60 * 1000
+  maxBusTime: 60 * 60 * 1000,
+  maxDistanceForRequest: 0.2
 }
 
 export const admins = new Set(["ankit.choudhury0608@gmail.com", "ayushmantripathy2004@gmail.com"]);
@@ -16,8 +17,8 @@ export const routes = [
 
 
 export const stopCoords = {
-  SBI: coords(21, 86),
   BN: coords(19.068599, 83.816309),
+  SBI: coords(20.2960587, 85.8245398),
   JJ: coords(19.071408, 83.812883),
   "OLD Gunupur": coords(300, 200),
   Bikrampur: coords(100, 200),

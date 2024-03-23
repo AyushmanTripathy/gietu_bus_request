@@ -39,7 +39,7 @@
   {#if response.isAdmin}
   <Admin data="{response.busStopRequests}" />
   {:else}
-  <User data="{response.busStopRequests}" />
+  <User data="{response}" />
   {/if} 
   {/if} 
   <div></div>

@@ -35,6 +35,7 @@ export async function GET({ locals }) {
   return json({
     busStopRequests,
     isAdmin: admins.has(session.user.email),
+    currentStop: studentRequests[(session.user.email)] ?? null
   });
 }
 
@@ -50,7 +51,8 @@ export async function DELETE({ locals }) {
 
   busStopRequests[studentRequests[email].stop].count--;
   delete studentRequests[email];
-  console.log(studentRequests, busStopRequests);
+
+  console.log(email + " cancelled request");
   return json({ success: true });
 }
 
@@ -82,7 +84,7 @@ export async function POST({ request, locals }) {
   best = stopNames[best];
 
   // not near to any stops
-  if (min > 0.1)
+  if (min > config.maxDistanceForRequest)
     return json({
       success: false,
       msg: "You are not close to any bus stops yet.",
@@ -90,6 +92,8 @@ export async function POST({ request, locals }) {
 
   busStopRequests[best].count++;
   studentRequests[email] = { stop: best, time: Date.now() };
+
+  console.log(email + " requested for " + best);
   return json({ success: true, stopName: best });
 }
 
@@ -104,5 +108,6 @@ export async function PATCH({ request, locals }) {
     busStopRequests[stop].fullfilled = Date.now();
   }
 
+  console.log("Bus on route " + no);
   return json({ success: true });
 }
